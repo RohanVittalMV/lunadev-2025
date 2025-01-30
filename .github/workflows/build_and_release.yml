@@ -31,7 +31,7 @@ jobs:
         run: |
           Get-ChildItem -Path godot -Recurse
           Write-Host "Current directory:"
-          Get-Locatio
+          Get-Location
 
       - name: Export Lunabase Windows
         run: godot --headless --export-release "Windows Desktop" lunabase/Lunabase.exe
