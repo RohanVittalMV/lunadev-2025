@@ -25,24 +25,32 @@ jobs:
           export-templates: true
       - name: Create Export Directory
         run: mkdir godot/lunabase/lunabase
-        # extra debug step to list directory structure
+
       - name: Debug - List Directory Structure
+        shell: powershell
         run: |
-          dir /s godot
-          echo "Current directory:"
-          cd
+          Get-ChildItem -Path godot -Recurse
+          Write-Host "Current directory:"
+          Get-Locatio
+
       - name: Export Lunabase Windows
         run: godot --headless --export-release "Windows Desktop" lunabase/Lunabase.exe
         working-directory: godot/lunabase
-        # extra debug step to check export result
+
       - name: Debug - Check Export Result
+        shell: powershell
         run: |
-          echo "Checking export directory:"
-          dir /s godot/lunabase
+          Write-Host "Checking export directory:"
+          Get-ChildItem -Path godot/lunabase -Recurse
+
+      # Alternative archive step with explicit working directory
       - name: Archive Lunabase Windows
-        run: 7z a -tzip lunabase_windows.zip ./godot/lunabase/lunabase/*
+        working-directory: ./godot/lunabase
+        run: 7z a -tzip ../../lunabase_windows.zip ./lunabase/*
+
       - name: Debug - Check Zip Contents
         run: 7z l lunabase_windows.zip
+
       - name: Release binary and SHA-256 checksum to GitHub
         uses: softprops/action-gh-release@v1
         with:
